@@ -16,6 +16,43 @@ export default function ValentinePage() {
   // Audio state
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Slideshow state
+  const [showSlideshow, setShowSlideshow] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = [
+    "/images/img1.jpg",
+    "/images/img2.jpg",
+    "/images/img3.JPG",
+    "/images/img4.jpg",
+    "/images/img5.jpeg",
+    "/images/img6.jpeg",
+    "/images/img7.jpeg",
+    "/images/img8.JPG",
+    "/images/img9.JPG",
+    "/images/img10.jpg",
+    "/images/img11.JPG",
+    "/images/img12.jpg",
+  ];
+
+  useEffect(() => {
+    if (yesPressed) {
+      const timer = setTimeout(() => {
+        setShowSlideshow(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [yesPressed]);
+
+  useEffect(() => {
+    if (showSlideshow) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [showSlideshow, images.length]);
+
   const handleNoHover = () => {
     setIsHovered(true);
     // Use window dimensions to ensure it stays on screen
@@ -62,7 +99,7 @@ export default function ValentinePage() {
   return (
     <div 
       ref={containerRef}
-      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-pink-200 via-red-200 to-pink-300 overflow-hidden relative p-4"
+      className={`flex flex-col items-center min-h-screen bg-gradient-to-br from-pink-200 via-red-200 to-pink-300 overflow-hidden relative p-4 transition-all duration-1000 ${showSlideshow ? 'justify-start pt-10' : 'justify-center'}`}
     >
       <audio 
         ref={audioRef} 
@@ -75,22 +112,61 @@ export default function ValentinePage() {
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center"
+          className="text-center w-full z-10"
         >
-          <div className="flex justify-center mb-8">
-             <motion.div
-               animate={{ scale: [1, 1.2, 1] }}
-               transition={{ repeat: Infinity, duration: 2 }}
-             >
-                <Heart className="w-32 h-32 text-red-600 fill-red-600" />
-             </motion.div>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-red-600 mb-6 drop-shadow-md font-serif">
-            Yay! I knew it! ❤️
-          </h1>
-          <p className="text-2xl text-pink-700 font-medium">
-            Best Valentine Ever! Love you Vinuki!
-          </p>
+          <motion.div
+             animate={showSlideshow ? { scale: 0.7 } : { scale: 1 }}
+             transition={{ duration: 0.5 }}
+             className="flex flex-col items-center"
+          >
+            {!showSlideshow && (
+                <div className="flex justify-center mb-8">
+                    <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    >
+                        <Heart className="w-32 h-32 text-red-600 fill-red-600" />
+                    </motion.div>
+                </div>
+            )}
+            <h1 className="text-5xl md:text-7xl font-bold text-red-600 mb-6 drop-shadow-md font-serif">
+                Yay! I knew it! ❤️
+            </h1>
+            <p className="text-2xl text-pink-700 font-medium mb-8">
+                Best Valentine Ever! Love you Vinuki!
+            </p>
+          </motion.div>
+
+          {showSlideshow && (
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+                className="max-w-6xl mx-auto w-full h-[60vh] md:h-[70vh] relative rounded-xl overflow-hidden shadow-2xl border-4 border-white/50 bg-black/20"
+            >
+                {images.map((src, index) => (
+                    <motion.div
+                        key={src}
+                        className="absolute inset-0 w-full h-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+                        transition={{ duration: 1 }}
+                    >
+                        {/* Blurred background for fill */}
+                        <div 
+                            className="absolute inset-0 bg-cover bg-center blur-xl opacity-50 scale-110"
+                            style={{ backgroundImage: `url(${src})` }}
+                        />
+                        {/* Main image */}
+                        <img
+                            src={src}
+                            alt={`Slideshow ${index + 1}`}
+                            className="absolute inset-0 w-full h-full object-contain relative z-10"
+                        />
+                    </motion.div>
+                ))}
+            </motion.div>
+          )}
         </motion.div>
       ) : (
         <div className="text-center z-10 w-full max-w-4xl">
