@@ -20,6 +20,49 @@ export default function ValentinePage() {
   const [showSlideshow, setShowSlideshow] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Reasons state
+  const [currentReason, setCurrentReason] = useState<string | null>(null);
+  
+  const reasons = [
+    "Your beautiful smile that lights up my day",
+    "The way you laugh at my silly jokes",
+    "Your kind and caring heart",
+    "How you make everything better just by being there",
+    "The way you look at me",
+    "How supportive you are of my dreams",
+    "The warmth of your hugs",
+    "Our late night conversations",
+    "Just being you ❤️"
+  ];
+
+  // Date Planner State
+  const [datePreferences, setDatePreferences] = useState({
+    food: "",
+    activity: "",
+    dessert: ""
+  });
+
+  const foodOptions = ["Italian 🍝", "Japanese 🍣", "Indian 🍛", "Burgers 🍔"];
+  const activityOptions = ["Movie 🎬", "Stargazing 🌌", "Bowling 🎳", "Arcade 👾"];
+  const dessertOptions = ["Ice Cream 🍦", "Waffles 🧇", "Cheesecake 🍰", "Donuts 🍩"];
+
+  const handleDateUsage = (category: string, value: string) => {
+    setDatePreferences(prev => ({
+        ...prev,
+        [category]: value
+    }));
+  };
+
+  const handleReasonClick = () => {
+    // Pick a random reason ensuring it's not the same as the current one (if possible)
+    let newReason;
+    do {
+        newReason = reasons[Math.floor(Math.random() * reasons.length)];
+    } while (newReason === currentReason && reasons.length > 1);
+    
+    setCurrentReason(newReason);
+  };
+
   const images = [
     "/images/img1.jpg",
     "/images/img2.jpg",
@@ -33,6 +76,10 @@ export default function ValentinePage() {
     "/images/img10.jpg",
     "/images/img11.JPG",
     "/images/img12.jpg",
+    "/images/img13.jpeg",
+    "/images/img14.jpeg",
+    "/images/img15.jpeg",
+    "/images/img16.jpeg",
   ];
 
   useEffect(() => {
@@ -74,26 +121,22 @@ export default function ValentinePage() {
         audioRef.current.play().catch(e => console.error("Audio play failed", e));
     }
 
-    const duration = 15 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
 
     const randomInRange = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
     }
 
+    // Run confetti continuously
     const interval: any = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
+      const particleCount = 50;
       // since particles fall down, start a bit higher than random
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
     }, 250);
+
+    // Optional: Clear interval cleanup if component unmounts (though for this simple page it might not be strictly necessary, it's good practice)
+    return () => clearInterval(interval);
   };
 
   return (
@@ -137,35 +180,197 @@ export default function ValentinePage() {
             </p>
           </motion.div>
 
-          {showSlideshow && (
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                className="max-w-6xl mx-auto w-full h-[60vh] md:h-[70vh] relative rounded-xl overflow-hidden shadow-2xl border-4 border-white/50 bg-black/20"
-            >
-                {images.map((src, index) => (
-                    <motion.div
-                        key={src}
-                        className="absolute inset-0 w-full h-full"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
-                        transition={{ duration: 1 }}
+          {showSlideshow && (<>
+            <div className="flex flex-col xl:flex-row gap-12 w-full max-w-[1800px] mx-auto items-center xl:items-start mt-8 px-4 md:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    className="w-full max-w-6xl h-[60vh] md:h-[70vh] relative rounded-xl overflow-hidden shadow-2xl border-4 border-white/50 bg-black/20 shrink-0"
+                >
+                    {images.map((src, index) => (
+                        <motion.div
+                            key={src}
+                            className="absolute inset-0 w-full h-full"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+                            transition={{ duration: 1 }}
+                        >
+                            {/* Blurred background for fill */}
+                            <div 
+                                className="absolute inset-0 bg-cover bg-center blur-xl opacity-50 scale-110"
+                                style={{ backgroundImage: `url(${src})` }}
+                            />
+                            {/* Main image */}
+                            <img
+                                src={src}
+                                alt={`Slideshow ${index + 1}`}
+                                className="absolute inset-0 w-full h-full object-contain relative z-10"
+                            />
+                        </motion.div>
+                    ))}
+                </motion.div>
+
+                {/* Reasons I Love You Section */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className="flex flex-col items-center justify-center z-20 lg:w-80 shrink-0 lg:mt-20"
+                >
+                     {/* Floating Hint */}
+                    {!currentReason && (
+                        <motion.div
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                            className="mb-4 text-white font-bold text-lg drop-shadow-md bg-pink-500/80 px-4 py-1 rounded-full"
+                        >
+                            Click me! 👇
+                        </motion.div>
+                    )}
+
+                    <motion.button
+                        whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(255, 105, 180, 0.6)" }}
+                        whileTap={{ scale: 0.95 }}
+                        animate={{ boxShadow: ["0px 0px 0px rgba(255, 105, 180, 0)", "0px 0px 20px rgba(255, 105, 180, 0.4)", "0px 0px 0px rgba(255, 105, 180, 0)"] }}
+                        transition={{ boxShadow: { duration: 2, repeat: Infinity } }}
+                        onClick={handleReasonClick}
+                        className="bg-white/90 backdrop-blur-sm hover:bg-white text-pink-600 font-bold py-4 px-10 rounded-full text-xl shadow-xl border-4 border-pink-300 transition-all mb-8 whitespace-nowrap relative overflow-hidden group"
                     >
-                        {/* Blurred background for fill */}
-                        <div 
-                            className="absolute inset-0 bg-cover bg-center blur-xl opacity-50 scale-110"
-                            style={{ backgroundImage: `url(${src})` }}
-                        />
-                        {/* Main image */}
-                        <img
-                            src={src}
-                            alt={`Slideshow ${index + 1}`}
-                            className="absolute inset-0 w-full h-full object-contain relative z-10"
-                        />
+                        <span className="relative z-10">Why I love you 💌</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-pink-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </motion.button>
+
+                    {currentReason && (
+                        <motion.div
+                            key={currentReason}
+                            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                            animate={{ 
+                                opacity: 1, 
+                                y: 0, 
+                                scale: 1,
+                                boxShadow: ["0px 0px 0px rgba(255, 20, 147, 0)", "0px 0px 50px rgba(255, 20, 147, 0.8)", "0px 0px 0px rgba(255, 20, 147, 0)"],
+                            }}
+                            transition={{ 
+                                duration: 0.5, // Enter duration
+                                boxShadow: { duration: 1.5, repeat: Infinity, ease: "easeInOut" } // Pulse duration
+                            }}
+                            className="bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full text-center border-4 border-pink-300 relative overflow-hidden"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-pink-100/50 via-white/50 to-pink-100/50 animate-pulse" />
+                            <p className="text-xl md:text-3xl text-pink-600 font-bold font-serif italic leading-relaxed relative z-10 drop-shadow-sm">
+                                "{currentReason}"
+                            </p>
+                        </motion.div>
+                    )}
+                </motion.div>
+            </div>
+            
+            {/* Date Planner Section */}
+             <div className="w-full max-w-6xl mx-auto mt-20 mb-20 px-4 z-20 relative">
+                <motion.h2 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-4xl md:text-6xl font-bold text-white text-center mb-12 drop-shadow-lg font-serif"
+                >
+                    Plan our Date Night! 📅 
+                </motion.h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Food Selection */}
+                    <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl border-2 border-white/50">
+                        <h3 className="text-2xl font-bold text-pink-600 mb-4 text-center">First, let's eat! 🍽️</h3>
+                        <div className="flex flex-col gap-3">
+                            {foodOptions.map((option) => (
+                                <button
+                                    key={option}
+                                    onClick={() => handleDateUsage('food', option)}
+                                    className={`p-3 rounded-xl text-lg transition-all border-2 ${datePreferences.food === option ? 'bg-pink-500 text-white border-pink-600 scale-105 shadow-lg font-bold' : 'bg-white hover:bg-pink-50 text-pink-800 border-pink-100'}`}
+                                >
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Activity Selection */}
+                    <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl border-2 border-white/50">
+                        <h3 className="text-2xl font-bold text-purple-600 mb-4 text-center">Then, let's go! 🚀</h3>
+                        <div className="flex flex-col gap-3">
+                            {activityOptions.map((option) => (
+                                <button
+                                    key={option}
+                                    onClick={() => handleDateUsage('activity', option)}
+                                    className={`p-3 rounded-xl text-lg transition-all border-2 ${datePreferences.activity === option ? 'bg-purple-500 text-white border-purple-600 scale-105 shadow-lg font-bold' : 'bg-white hover:bg-purple-50 text-purple-800 border-purple-100'}`}
+                                >
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Dessert Selection */}
+                    <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl border-2 border-white/50">
+                        <h3 className="text-2xl font-bold text-red-500 mb-4 text-center">Finally, a treat! 🍨</h3>
+                        <div className="flex flex-col gap-3">
+                            {dessertOptions.map((option) => (
+                                <button
+                                    key={option}
+                                    onClick={() => handleDateUsage('dessert', option)}
+                                    className={`p-3 rounded-xl text-lg transition-all border-2 ${datePreferences.dessert === option ? 'bg-red-500 text-white border-red-600 scale-105 shadow-lg font-bold' : 'bg-white hover:bg-red-50 text-red-800 border-red-100'}`}
+                                >
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Date Ticket */}
+                {datePreferences.food && datePreferences.activity && datePreferences.dessert && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        className="mt-16 mx-auto max-w-xl bg-white p-8 rounded-sm shadow-2xl relative border-[3px] border-dashed border-gray-300 transform rotate-1 hover:rotate-0 transition-transform duration-300"
+                        style={{
+                            backgroundImage: "radial-gradient(#e5e7eb 1px, transparent 1px)",
+                            backgroundSize: "20px 20px"
+                        }}
+                    >
+                        {/* Stamp */}
+                        <div className="absolute top-4 right-4 w-24 h-24 rounded-full border-4 border-red-500 opacity-20 flex items-center justify-center transform rotate-12 pointer-events-none">
+                            <span className="text-red-500 font-bold text-xl uppercase">Approved</span>
+                        </div>
+
+                        <h3 className="text-3xl font-bold text-gray-800 text-center mb-2 font-serif uppercase tracking-widest border-b-2 border-gray-800 pb-2">Date Night Ticket</h3>
+                        <p className="text-center text-gray-500 italic mb-8">Admit Two ❤️</p>
+                        
+                        <div className="space-y-4 text-xl">
+                            <div className="flex justify-between border-b border-gray-200 pb-2">
+                                <span className="font-bold text-gray-600">Dinner:</span>
+                                <span className="text-pink-600 font-bold">{datePreferences.food}</span>
+                            </div>
+                            <div className="flex justify-between border-b border-gray-200 pb-2">
+                                <span className="font-bold text-gray-600">Activity:</span>
+                                <span className="text-purple-600 font-bold">{datePreferences.activity}</span>
+                            </div>
+                            <div className="flex justify-between border-b border-gray-200 pb-2">
+                                <span className="font-bold text-gray-600">Dessert:</span>
+                                <span className="text-red-500 font-bold">{datePreferences.dessert}</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 text-center">
+                            <p className="text-sm text-gray-400">Valid Forever • Non-Refundable • Paid with Love</p>
+                            <div className="w-full h-12 bg-gray-800 mt-4 rounded-sm relative overflow-hidden flex items-center justify-center">
+                                <span className="text-white font-mono tracking-[0.5em]">VINUKI & JEHAN</span>
+                            </div>
+                        </div>
                     </motion.div>
-                ))}
-            </motion.div>
+                )}
+             </div>
+             </>
           )}
         </motion.div>
       ) : (
@@ -207,7 +412,7 @@ export default function ValentinePage() {
       )}
       
       {/* Background decorations */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      <div className="fixed inset-0 pointer-events-none z-0">
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
