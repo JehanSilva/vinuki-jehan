@@ -139,6 +139,14 @@ export default function ValentinePage() {
     return () => clearInterval(interval);
   };
 
+  const handleSendWhatsApp = () => {
+    const phoneNumber = "94765722909";
+    const message = encodeURIComponent(
+      `Hey JayJay! 💖\n\nI've planned our perfect Date Night! 📅\n\n🍽️ Dinner: ${datePreferences.food}\n🚀 Activity: ${datePreferences.activity}\n🍨 Dessert: ${datePreferences.dessert}\n\nExcited! 😍`
+    );
+    window.open(`whatsapp://send?phone=${phoneNumber}&text=${message}`, '_blank');
+  };
+
   return (
     <div 
       ref={containerRef}
@@ -362,9 +370,10 @@ export default function ValentinePage() {
                         </div>
 
                         <div className="mt-8 text-center">
-                            <p className="text-sm text-gray-400">Valid Forever • Non-Refundable • Paid with Love</p>
-                            <div className="w-full h-12 bg-gray-800 mt-4 rounded-sm relative overflow-hidden flex items-center justify-center">
-                                <span className="text-white font-mono tracking-[0.5em]">VINUKI & JEHAN</span>
+                            <p className="text-sm text-gray-400 mb-2">Valid Forever • Non-Refundable • Paid with Love</p>
+                            <p className="text-xs text-pink-500 font-bold animate-pulse mb-2">👇 Click below to send to JayJay! 👇</p>
+                            <div className="w-full h-12 bg-gray-800 mt-4 rounded-sm relative overflow-hidden flex items-center justify-center cursor-pointer hover:bg-gray-900 transition-colors group" onClick={handleSendWhatsApp}> 
+                                <span className="text-white font-mono tracking-[0.5em] group-hover:tracking-[0.6em] transition-all">VINUKI & JEHAN</span>
                             </div>
                         </div>
                     </motion.div>
