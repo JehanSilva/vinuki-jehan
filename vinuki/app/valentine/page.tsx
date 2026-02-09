@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Heart, PartyPopper } from "lucide-react";
+import { Heart, PartyPopper, ChevronLeft, ChevronRight } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export default function ValentinePage() {
@@ -19,9 +19,10 @@ export default function ValentinePage() {
   // Slideshow state
   const [showSlideshow, setShowSlideshow] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSlideshowPaused, setIsSlideshowPaused] = useState(false);
 
   // Reasons state
-  const [currentReason, setCurrentReason] = useState<string | null>(null);
+  const [currentReasonIndex, setCurrentReasonIndex] = useState(-1);
   
   const reasons = [
     "Your beautiful smile that lights up my day",
@@ -54,32 +55,28 @@ export default function ValentinePage() {
   };
 
   const handleReasonClick = () => {
-    // Pick a random reason ensuring it's not the same as the current one (if possible)
-    let newReason;
-    do {
-        newReason = reasons[Math.floor(Math.random() * reasons.length)];
-    } while (newReason === currentReason && reasons.length > 1);
-    
-    setCurrentReason(newReason);
+    if (currentReasonIndex < reasons.length - 1) {
+        setCurrentReasonIndex(prev => prev + 1);
+    }
   };
 
   const images = [
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img1_pyngx5.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659860/img2_jkgp1e.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659846/img3_dreoj1.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img4_sivkqa.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img5_elz0wp.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659843/img6_whsjde.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659840/img7_xtvlhx.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img8_cpcki6.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img9_rkweji.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659842/img10_z6vamg.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659865/img11_lffelj.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img12_brttrt.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659845/img13_dbm393.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659850/img14_n8eph8.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659851/img15_u3ebxj.jpg",
-    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659848/img16_yjllra.jpg",
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img1_pyngx5.jpg", caption: "The day we first met 💖" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659860/img2_jkgp1e.jpg", caption: "Our first date together 🌹" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659846/img3_dreoj1.jpg", caption: "Adventures with you 🌍" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img4_sivkqa.jpg", caption: "Your smile is everything 😊" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img5_elz0wp.jpg", caption: "Silly moments with you 🤪" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659843/img6_whsjde.jpg", caption: "Always by your side 👫" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659840/img7_xtvlhx.jpg", caption: "Making memories... ✨" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img8_cpcki6.jpg", caption: "You are my sunshine ☀️" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img9_rkweji.jpg", caption: "Better together ❤️" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659842/img10_z6vamg.jpg", caption: "Laughing with you is my favorite 😂" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659865/img11_lffelj.jpg", caption: "Stolen glances 👀" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img12_brttrt.jpg", caption: "My forever valentine 💌" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659845/img13_dbm393.jpg", caption: "Cherishing every moment ⏳" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659850/img14_n8eph8.jpg", caption: "Love you to the moon and back 🌙" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659851/img15_u3ebxj.jpg", caption: "So lucky to have you 🍀" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659848/img16_yjllra.jpg", caption: "Forever and always 💍" },
   ];
 
   useEffect(() => {
@@ -92,13 +89,21 @@ export default function ValentinePage() {
   }, [yesPressed]);
 
   useEffect(() => {
-    if (showSlideshow) {
+    if (showSlideshow && !isSlideshowPaused) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
       }, 3000);
       return () => clearInterval(interval);
     }
-  }, [showSlideshow, images.length]);
+  }, [showSlideshow, isSlideshowPaused, images.length]);
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   const handleNoHover = () => {
     setIsHovered(true);
@@ -190,33 +195,67 @@ export default function ValentinePage() {
 
           {showSlideshow && (<>
             <div className="flex flex-col xl:flex-row gap-12 w-full max-w-[1800px] mx-auto items-center xl:items-start mt-8 px-4 md:px-8">
+                {/* Enhanced Photo Frame */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1 }}
-                    className="w-full max-w-6xl h-[60vh] md:h-[70vh] relative rounded-xl overflow-hidden shadow-2xl border-4 border-white/50 bg-black/20 shrink-0"
+                    initial={{ opacity: 0, y: 50, rotate: -2 }}
+                    animate={{ opacity: 1, y: 0, rotate: -3 }}
+                    whileHover={{ scale: 1.02, rotate: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="relative group w-full max-w-2xl mx-auto"
+                    onMouseEnter={() => setIsSlideshowPaused(true)}
+                    onMouseLeave={() => setIsSlideshowPaused(false)}
                 >
-                    {images.map((src, index) => (
-                        <motion.div
-                            key={src}
-                            className="absolute inset-0 w-full h-full"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
-                            transition={{ duration: 1 }}
+                    <div className="bg-white p-4 pb-16 rounded shadow-2xl transform transition-transform duration-500 relative">
+                        {/* Decorative tape/pin */}
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-12 bg-pink-200/50 rotate-2 backdrop-blur-sm z-20 shadow-sm border border-white/40"></div>
+                        
+                        <div className="w-full h-[50vh] md:h-[60vh] relative overflow-hidden bg-gray-100 border-2 border-gray-100">
+                             {images.map((img, index) => (
+                                <motion.div
+                                    key={img.src}
+                                    className="absolute inset-0 w-full h-full"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+                                    transition={{ duration: 0.8 }}
+                                >
+                                    {/* Blurred background for fill */}
+                                    <div 
+                                        className="absolute inset-0 bg-cover bg-center blur-xl opacity-50 scale-110"
+                                        style={{ backgroundImage: `url(${img.src})` }}
+                                    />
+                                    {/* Main image */}
+                                    <img
+                                        src={img.src}
+                                        alt={`Slideshow ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                        
+                        {/* Caption Area */}
+                        <div className="absolute bottom-4 left-0 right-0 text-center text-gray-800 px-4">
+                             <p className="text-3xl md:text-4xl font-handwriting font-bold truncate">{images[currentImageIndex].caption}</p>
+                        </div>
+
+                         {/* Navigation Buttons */}
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-pink-500 rounded-full p-2 shadow-lg transition-all transform hover:scale-110 opacity-0 group-hover:opacity-100 z-30"
                         >
-                            {/* Blurred background for fill */}
-                            <div 
-                                className="absolute inset-0 bg-cover bg-center blur-xl opacity-50 scale-110"
-                                style={{ backgroundImage: `url(${src})` }}
-                            />
-                            {/* Main image */}
-                            <img
-                                src={src}
-                                alt={`Slideshow ${index + 1}`}
-                                className="absolute inset-0 w-full h-full object-contain relative z-10"
-                            />
-                        </motion.div>
-                    ))}
+                            <ChevronLeft size={24} />
+                        </button>
+                        <button 
+                             onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-pink-500 rounded-full p-2 shadow-lg transition-all transform hover:scale-110 opacity-0 group-hover:opacity-100 z-30"
+                        >
+                            <ChevronRight size={24} />
+                        </button>
+
+                         {/* Corner Decorations */}
+                        <Heart className="absolute -top-4 -left-4 text-pink-400 fill-pink-200 w-12 h-12 -rotate-12 drop-shadow-md z-10" />
+                        <Heart className="absolute -bottom-4 -right-4 text-red-400 fill-red-200 w-10 h-10 rotate-12 drop-shadow-md z-10" />
+                    </div>
                 </motion.div>
 
                 {/* Reasons I Love You Section */}
@@ -227,13 +266,13 @@ export default function ValentinePage() {
                     className="flex flex-col items-center justify-center z-20 lg:w-80 shrink-0 lg:mt-20"
                 >
                      {/* Floating Hint */}
-                    {!currentReason && (
+                    {currentReasonIndex < reasons.length - 1 && (
                         <motion.div
                             animate={{ y: [0, -10, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                             className="mb-4 text-white font-bold text-lg drop-shadow-md bg-pink-500/80 px-4 py-1 rounded-full"
                         >
-                            Click me! 👇
+                            {currentReasonIndex === -1 ? "Click me! 👇" : "Next Reason 👇"}
                         </motion.div>
                     )}
 
@@ -243,15 +282,16 @@ export default function ValentinePage() {
                         animate={{ boxShadow: ["0px 0px 0px rgba(255, 105, 180, 0)", "0px 0px 20px rgba(255, 105, 180, 0.4)", "0px 0px 0px rgba(255, 105, 180, 0)"] }}
                         transition={{ boxShadow: { duration: 2, repeat: Infinity } }}
                         onClick={handleReasonClick}
-                        className="bg-white/90 backdrop-blur-sm hover:bg-white text-pink-600 font-bold py-4 px-10 rounded-full text-xl shadow-xl border-4 border-pink-300 transition-all mb-8 whitespace-nowrap relative overflow-hidden group"
+                        className="bg-white/90 backdrop-blur-sm hover:bg-white text-pink-600 font-bold py-4 px-10 rounded-full text-xl shadow-xl border-4 border-pink-300 transition-all mb-8 whitespace-nowrap relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={currentReasonIndex === reasons.length - 1}
                     >
                         <span className="relative z-10">Why I love you 💌</span>
                         <div className="absolute inset-0 bg-gradient-to-r from-pink-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </motion.button>
 
-                    {currentReason && (
+                    {currentReasonIndex >= 0 && (
                         <motion.div
-                            key={currentReason}
+                            key={currentReasonIndex}
                             initial={{ opacity: 0, y: 20, scale: 0.8 }}
                             animate={{ 
                                 opacity: 1, 
@@ -267,11 +307,35 @@ export default function ValentinePage() {
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-pink-100/50 via-white/50 to-pink-100/50 animate-pulse" />
                             <p className="text-xl md:text-3xl text-pink-600 font-bold font-serif italic leading-relaxed relative z-10 drop-shadow-sm">
-                                "{currentReason}"
+                                "{reasons[currentReasonIndex]}"
                             </p>
                         </motion.div>
                     )}
                 </motion.div>
+
+                {/* Scroll Down Indicator */}
+                {currentReasonIndex === reasons.length - 1 && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, y: [0, 10, 0] }}
+                        transition={{ 
+                            opacity: { delay: 1, duration: 1 },
+                            y: { repeat: Infinity, duration: 1.5, ease: "easeInOut" }
+                        }}
+                        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/80 hidden xl:flex flex-col items-center gap-2 cursor-pointer z-20"
+                        onClick={() => {
+                            window.scrollTo({
+                                top: window.innerHeight,
+                                behavior: 'smooth'
+                            });
+                        }}
+                    >
+                        <span className="text-sm font-handwriting text-xl font-bold">Plan our Date 👇</span>
+                        <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
+                        </div>
+                    </motion.div>
+                )}
             </div>
             
             {/* Date Planner Section */}
