@@ -152,6 +152,35 @@ export default function ValentinePage() {
     window.open(`whatsapp://send?phone=${phoneNumber}&text=${message}`, '_blank');
   };
 
+  // Background decorations state
+  const [decorations, setDecorations] = useState<Array<{
+    id: number;
+    x: number;
+    y: number;
+    scale: number;
+    rotate: number;
+    yTo: number;
+    rotateTo: number;
+    duration: number;
+    size: number;
+  }>>([]);
+
+  useEffect(() => {
+    // Generate decorations only on client to avoid hydration mismatch
+    const newDecorations = Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      scale: Math.random() * 0.5 + 0.5,
+      rotate: Math.random() * 360,
+      yTo: Math.random() * -100,
+      rotateTo: Math.random() * 360,
+      duration: Math.random() * 20 + 10,
+      size: Math.random() * 40 + 20
+    }));
+    setDecorations(newDecorations);
+  }, []);
+
   return (
     <div 
       ref={containerRef}
@@ -313,30 +342,31 @@ export default function ValentinePage() {
                     )}
                 </motion.div>
 
-                {/* Scroll Down Indicator */}
-                {currentReasonIndex === reasons.length - 1 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1, y: [0, 10, 0] }}
-                        transition={{ 
-                            opacity: { delay: 1, duration: 1 },
-                            y: { repeat: Infinity, duration: 1.5, ease: "easeInOut" }
-                        }}
-                        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/80 hidden xl:flex flex-col items-center gap-2 cursor-pointer z-20"
-                        onClick={() => {
-                            window.scrollTo({
-                                top: window.innerHeight,
-                                behavior: 'smooth'
-                            });
-                        }}
-                    >
-                        <span className="text-sm font-handwriting text-xl font-bold">Plan our Date 👇</span>
-                        <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
-                        </div>
-                    </motion.div>
-                )}
             </div>
+            
+            {/* Scroll Down Indicator - Positioned between sections */}
+            {currentReasonIndex === reasons.length - 1 && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, y: [0, 10, 0] }}
+                    transition={{ 
+                        opacity: { delay: 1, duration: 1 },
+                        y: { repeat: Infinity, duration: 1.5, ease: "easeInOut" }
+                    }}
+                    className="flex flex-col items-center gap-2 cursor-pointer z-20 mt-8 mb-4 relative"
+                    onClick={() => {
+                        window.scrollTo({
+                            top: window.innerHeight,
+                            behavior: 'smooth'
+                        });
+                    }}
+                >
+                    <span className="text-sm font-handwriting text-xl font-bold text-white/90 drop-shadow-md">Plan our Date 👇</span>
+                    <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center shadow-lg bg-pink-500/20 backdrop-blur-sm">
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
+                    </div>
+                </motion.div>
+            )}
             
             {/* Date Planner Section */}
              <div className="w-full max-w-6xl mx-auto mt-20 mb-20 px-4 z-20 relative">
@@ -447,27 +477,41 @@ export default function ValentinePage() {
           )}
         </motion.div>
       ) : (
-        <div className="text-center z-10 w-full max-w-4xl">
+        <div className="text-center z-10 w-full max-w-4xl px-4">
           <motion.div
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-             <Heart className="w-20 h-20 text-red-500 fill-red-500 mx-auto mb-6 animate-pulse" />
+             <Heart className="w-24 h-24 text-red-500 fill-red-500 mx-auto mb-8 animate-pulse drop-shadow-xl" />
           </motion.div>
           
-          <h1 className="text-4xl md:text-6xl font-bold text-red-600 mb-12 leading-tight drop-shadow-sm font-serif">
+          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-pink-600 mb-12 leading-tight drop-shadow-sm font-handwriting py-2">
             Vinuki, will you be my Valentine?
           </h1>
 
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 relative h-40">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 relative h-60">
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.15 }}
               whileTap={{ scale: 0.95 }}
+              animate={{ 
+                scale: [1, 1.02, 1],
+                boxShadow: ["0px 0px 0px rgba(255, 60, 60, 0)", "0px 0px 30px rgba(255, 60, 60, 0.5)", "0px 0px 0px rgba(255, 60, 60, 0)"]
+              }}
+              transition={{ 
+                scale: { duration: 1.5, repeat: Infinity },
+                boxShadow: { duration: 1.5, repeat: Infinity }
+              }}
               onClick={handleYesClick}
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 md:py-4 md:px-12 rounded-full text-xl md:text-2xl shadow-lg hover:shadow-xl transition-all border-4 border-green-600 cursor-pointer z-50"
+              className="bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold py-4 px-12 md:py-6 md:px-16 rounded-full text-2xl md:text-4xl shadow-2xl transition-all border-4 border-white/50 cursor-pointer z-50 relative overflow-hidden group font-serif tracking-widest"
             >
-              Yes 💖
+              <span className="relative z-10 drop-shadow-md">Yes 💖</span>
+              <motion.div 
+                className="absolute inset-0 bg-white/40"
+                initial={{ x: "-100%", skewX: -12 }}
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+              />
             </motion.button>
 
             <motion.button
@@ -475,7 +519,7 @@ export default function ValentinePage() {
               onClick={handleNoHover}
               animate={isHovered ? { x: noBtnPosition.x, y: noBtnPosition.y } : {}}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 md:py-4 md:px-12 rounded-full text-xl md:text-2xl shadow-lg transition-colors border-4 border-gray-500 cursor-default"
+              className="bg-white/80 hover:bg-white text-gray-500 font-bold py-3 px-8 md:py-4 md:px-10 rounded-full text-lg md:text-xl shadow-lg transition-colors border-2 border-gray-200 cursor-default backdrop-blur-sm hover:text-gray-700"
               style={isHovered ? { position: 'fixed', left: 0, top: 0, zIndex: 9999 } : { position: 'static' }}
             >
               No 😢
@@ -486,27 +530,29 @@ export default function ValentinePage() {
       
       {/* Background decorations */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(20)].map((_, i) => (
+        {decorations.map((d) => (
           <motion.div
-            key={i}
+            key={d.id}
             className="absolute text-pink-300 opacity-50"
+            style={{
+                left: d.x,
+                top: d.y,
+            }}
             initial={{ 
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000), 
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
-              scale: Math.random() * 0.5 + 0.5,
-              rotate: Math.random() * 360
+              scale: d.scale,
+              rotate: d.rotate
             }}
             animate={{ 
-              y: [null, Math.random() * -100],
-              rotate: [null, Math.random() * 360]
+              y: [0, d.yTo],
+              rotate: [d.rotate, d.rotateTo]
             }}
             transition={{ 
-              duration: Math.random() * 20 + 10, 
+              duration: d.duration, 
               repeat: Infinity, 
               repeatType: "reverse" 
             }}
           >
-            <Heart size={Math.random() * 40 + 20} fill="currentColor" />
+            <Heart size={d.size} fill="currentColor" />
           </motion.div>
         ))}
       </div>
