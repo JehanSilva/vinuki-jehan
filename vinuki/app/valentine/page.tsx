@@ -64,22 +64,22 @@ export default function ValentinePage() {
   };
 
   const images = [
-    "/images/img1.jpg",
-    "/images/img2.jpg",
-    "/images/img3.JPG",
-    "/images/img4.jpg",
-    "/images/img5.jpeg",
-    "/images/img6.jpeg",
-    "/images/img7.jpeg",
-    "/images/img8.JPG",
-    "/images/img9.JPG",
-    "/images/img10.jpg",
-    "/images/img11.JPG",
-    "/images/img12.jpg",
-    "/images/img13.jpeg",
-    "/images/img14.jpeg",
-    "/images/img15.jpeg",
-    "/images/img16.jpeg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img1_pyngx5.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659860/img2_jkgp1e.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659846/img3_dreoj1.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img4_sivkqa.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img5_elz0wp.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659843/img6_whsjde.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659840/img7_xtvlhx.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img8_cpcki6.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img9_rkweji.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659842/img10_z6vamg.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659865/img11_lffelj.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img12_brttrt.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659845/img13_dbm393.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659850/img14_n8eph8.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659851/img15_u3ebxj.jpg",
+    "https://res.cloudinary.com/dklcexfun/image/upload/v1770659848/img16_yjllra.jpg",
   ];
 
   useEffect(() => {
