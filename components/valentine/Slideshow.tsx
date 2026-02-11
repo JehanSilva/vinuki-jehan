@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img12_brttrt.jpg", caption: "My forever valentine 💌" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img12_brttrt.jpg", caption: "Five more minutes (for the tenth time)" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659846/img3_dreoj1.jpg", caption: "Day 1 of snackies" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659860/img2_jkgp1e.jpg", caption: "Sun kissed" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659844/img1_pyngx5.jpg", caption: "Side eyes that is spicier than wasabi" },
@@ -14,12 +14,12 @@ const images = [
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659845/img13_dbm393.jpg", caption: "Cooking up memories" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659850/img14_n8eph8.jpg", caption: "Captured by the professional third wheel" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659851/img15_u3ebxj.jpg", caption: "Finding Nemo" },
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659865/img11_lffelj.jpg", caption: "Stolen glances 👀" },
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img8_cpcki6.jpg", caption: "You are my sunshine" },
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img9_rkweji.jpg", caption: "Better together <3" },
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659840/img7_xtvlhx.jpg", caption: "Making memories... ✨" },
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659843/img6_whsjde.jpg", caption: "Always by your side"},
-    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img5_elz0wp.jpg", caption: "Silly moments with you 🤪" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659865/img11_lffelj.jpg", caption: "A little detour" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img8_cpcki6.jpg", caption: "Close calls & shopping hauls" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659857/img9_rkweji.jpg", caption: "Because \"what should we eat?\"" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659840/img7_xtvlhx.jpg", caption: "2026 spoiler alert... ✨" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659843/img6_whsjde.jpg", caption: "Finally off the \"sick bay\" diet" },
+    { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659841/img5_elz0wp.jpg", caption: "Current status: Parked in our own little world" },
     { src: "https://res.cloudinary.com/dklcexfun/image/upload/v1770659848/img16_yjllra.jpg", caption: "Forever and always 💍" },
 ];
 

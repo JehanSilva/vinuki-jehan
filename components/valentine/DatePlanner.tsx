@@ -10,9 +10,40 @@ export default function DatePlanner() {
     dessert: ""
   });
 
-  const foodOptions = ["Italian 🍝🍕", "Japanese 🍣", "Indian 🍛", "Burgers 🍔"];
-  const activityOptions = ["Movie 🎬", "Stargazing 🌌", "Bowling 🎳", "Arcade 👾"];
-  const dessertOptions = ["Ice Cream 🍦", "Waffles 🧇", "Cheesecake 🍰", "Donuts 🍩"];
+  const foodOptions = [
+    "Italian 🍝🍕",
+    "Japanese 🍣",
+    "Chinese 🥡",
+    "Mexican 🌮",
+    "Steakhouse 🥩",
+    "Korean 🍖",
+    "Seafood 🦞",
+    "Indian 🍛",
+    "Burgers 🍔",
+    "Thai 🍜"
+  ];
+  const activityOptions = [
+    "Movie 🎬",
+    "Stargazing 🌌",
+    "Bowling 🎳",
+    "Arcade 👾",
+    "Walk in the Park 🌳",
+    "Art Gallery 🎨",
+    "Picnic 🧺",
+    "Karaoke 🎤",
+    "Board Games 🎲"
+  ];
+  const dessertOptions = [
+    "Ice Cream 🍦",
+    "Ice Tea ☕",
+    "Dark Chocolate 🍫",
+    "Salted Caramel Cheesecake 🍰",
+    "Donuts 🍩",
+    "Tiramisu 🍮",
+    "Crepes 🥞",
+    "Brownies 🍫",
+    "Waffles 🧇"
+  ];
 
   const handleDateUsage = (category: string, value: string) => {
     setDatePreferences(prev => ({

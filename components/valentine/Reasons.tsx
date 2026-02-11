@@ -4,14 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const reasons = [
-    "Your beautiful smile that lights up my day",
+    "Because your beautiful smile lights up all my days",
     "The way you laugh at my silly jokes",
     "Your kind and caring heart",
     "How you make everything better just by being there",
-    "The way you look at me",
-    "How supportive you are of my dreams",
-    "The warmth of your hugs",
-    "Our late night conversations",
+    "The way you look at me with those beautiful eyes",
+    "How supportive you are of my goals",
+    "Your warm hugs",
+    "Our late night conversations that goes on until we fall asleep",
     "Just being you ❤️"
 ];
 
